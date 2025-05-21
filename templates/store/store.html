@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- SECTION PAGETOP -->
+<section class="section-pagetop bg">
+  <div class="container">
+    {% if 'search' in request.path %}
+      <h2 class="title-page">Search Result</h2>
+    {% else %}
+      <h2 class="title-page">Our Store</h2>
+    {% endif %}
+  </div>
+</section>
+
+<!-- SECTION CONTENT -->
+<section class="section-content padding-y">
+<div class="container">
+<div class="row">
+  <aside class="col-md-3">
+
+    <div class="card">
+      <article class="filter-group">
+        <header class="card-header">
+          <a href="#" data-toggle="collapse" data-target="#collapse_1">
+            <i class="icon-control fa fa-chevron-down"></i>
+            <h6 class="title">Categories</h6>
+          </a>
+        </header>
+        <div class="filter-content collapse show" id="collapse_1">
+          <div class="card-body">
+            <ul class="list-menu">
+              <li><a href="{% url 'store' %}">All Products</a></li>
+              {% for category in links %}
+                <li><a href="{{ category.get_url }}">{{ category.category_name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ⭐ Rating Filter -->
+    <div class="card mt-4">
+      <article class="filter-group">
+        <header class="card-header">
+          <a href="#" data-toggle="collapse" data-target="#collapse_rating">
+            <i class="icon-control fa fa-chevron-down"></i>
+            <h6 class="title">Filter by Rating</h6>
+          </a>
+        </header>
+        <div class="filter-content collapse show" id="collapse_rating">
+          <div class="card-body">
+            <form method="get" id="rating-filter-form">
+              <select class="form-control" name="rating" onchange="document.getElementById('rating-filter-form').submit();">
+                <option value="">All Ratings</option>
+                <option value="4" {% if request.GET.rating == "4" %}selected{% endif %}>4 stars & up</option>
+                <option value="3" {% if request.GET.rating == "3" %}selected{% endif %}>3 stars & up</option>
+                <option value="2" {% if request.GET.rating == "2" %}selected{% endif %}>2 stars & up</option>
+                <option value="1" {% if request.GET.rating == "1" %}selected{% endif %}>1 star & up</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+
+  </aside>
+
+  <main class="col-md-9">
+
+    <header class="border-bottom mb-4 pb-3">
+      <div class="form-inline">
+        <span class="mr-md-auto"><b>{{ product_count }}</b> items found </span>
+      </div>
+    </header>
+
+    <div class="row">
+      {% if products %}
+        {% for product in products %}
+        <div class="col-md-4">
+          <figure class="card card-product-grid">
+            <div class="img-wrap">
+              <a href="{{ product.get_url }}"><img src="{{ product.images.url }}"></a>
+            </div>
+            <figcaption class="info-wrap">
+              <div class="fix-height">
+                <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+                <div class="price-wrap mt-2">
+                  <span class="price">₹ {{ product.price }}</span>
+                  <br>
+                  <small>Rating: {{ product.averageReview|floatformat:1 }} ★</small>
+                </div>
+              </div>
+              <a href="{{ product.get_url }}" class="btn btn-block btn-primary">View Details</a>
+            </figcaption>
+          </figure>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12">
+          <h4>No products found for this rating.</h4>
+        </div>
+      {% endif %}
+    </div>
+
+    <nav class="mt-4" aria-label="Page navigation">
+      {% if products.has_other_pages %}
+      <ul class="pagination">
+        {% if products.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Previous</a></li>
+        {% endif %}
+        {% for i in products.paginator.page_range %}
+        <li class="page-item {% if products.number == i %}active{% endif %}">
+          <a class="page-link" href="?page={{ i }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">{{ i }}</a>
+        </li>
+        {% endfor %}
+        {% if products.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Next</a></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </nav>
+
+  </main>
+</div>
+</div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% autoescape off %}
+{% csrf_token %}
+
+Hi {{user.first_name}},
+
+YOUR ORDER HAS BEEN RECIEVED
+
+Order Number: {{order.order_number}}
+
+{% endautoescape %}
