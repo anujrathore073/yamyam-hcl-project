@@ -1,7 +1,7 @@
 # ReviewMaster: Product Review & Rating Platform
 
-## 🛒 Domain
-E-commerce
+# 🛒 Domain
+### E-commerce
 
 ## 📋 Project Synopsis
 **ReviewMaster** is a Django-based product review and rating platform that allows customers to:
@@ -67,6 +67,10 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+- After creating the superuser, you can log in to the Django admin panel at:
+
+👉 [http://127.0.0.1:8000/securelogin/](http://127.0.0.1:8000/securelogin/)
+
 ### 7. Run the Development Server
 ```bash
 python manage.py runserver
@@ -79,6 +83,7 @@ GitHub: [https://github.com/anujrathore073/yamyam-hcl-project](https://github.co
 
 ## 🧑‍💻 Author
 - [Anuj Rathore](https://github.com/anujrathore073)
+- email-anuj.rathore@avantika.edu.in
 
 ---
 
